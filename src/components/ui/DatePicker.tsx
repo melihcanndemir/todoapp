@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 
 interface DatePickerProps {
   value: string;
@@ -20,7 +20,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   required = false,
   placeholder,
 }) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
   const inputRef = useRef<HTMLInputElement>(null);
   
   // Apply custom styles to the calendar button via CSS variables
@@ -69,8 +69,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
           min={min}
           max={max}
           required={required}
-          placeholder={placeholder || t("selectDate")}
-          aria-label={placeholder || t("selectDate")}
+          placeholder={placeholder || content.selectDate}
+          aria-label={placeholder || content.selectDate}
           className={`w-full px-4 py-2 
                      bg-gray-100 dark:bg-gray-800 rounded-lg 
                      text-gray-900 dark:text-gray-100 border border-gray-300 

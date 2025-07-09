@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 import { Input, Select, Button, TextArea, DatePicker } from "./ui";
 import TagInput from "./ui/TagInput";
 
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const TodoInput = ({ onAdd }: Props) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
   const [text, setText] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<"work" | "school" | "personal">(
@@ -39,12 +39,12 @@ const TodoInput = ({ onAdd }: Props) => {
   return (
     <div className="flex flex-col gap-3 mt-4">
       <Input
-        placeholder={t("addTodo")}
+        placeholder={content.addTodo.value}
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
       <TextArea
-        placeholder={t("addDescription")}
+        placeholder={content.addDescription.value}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         className="resize-none"
@@ -57,9 +57,9 @@ const TodoInput = ({ onAdd }: Props) => {
             setCategory(e.target.value as "work" | "school" | "personal")
           }
         >
-          <option value="work">{t("work")}</option>
-          <option value="school">{t("school")}</option>
-          <option value="personal">{t("personal")}</option>
+          <option value="work">{content.work.value}</option>
+          <option value="school">{content.school.value}</option>
+          <option value="personal">{content.personal.value}</option>
         </Select>
         <Select
           value={priority}
@@ -70,15 +70,15 @@ const TodoInput = ({ onAdd }: Props) => {
             }
           }}
         >
-          <option value="low">{t("priorityLow")}</option>
-          <option value="medium">{t("priorityMedium")}</option>
-          <option value="high">{t("priorityHigh")}</option>
+          <option value="low">{content.priorityLow.value}</option>
+          <option value="medium">{content.priorityMedium.value}</option>
+          <option value="high">{content.priorityHigh.value}</option>
         </Select>
       </div>
       <TagInput
         tags={tags}
         onChange={setTags}
-        placeholder={t("addTags")}
+        placeholder={content.addTags.value}
       />
       <div className="flex gap-2">
         <DatePicker
@@ -87,7 +87,7 @@ const TodoInput = ({ onAdd }: Props) => {
           min={new Date().toISOString().split("T")[0]}
           className="flex-1"
         />
-        <Button onClick={handleAdd}>{t("addButton")}</Button>
+        <Button onClick={handleAdd}>{content.addButton}</Button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import type { KeyboardEvent } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 import TagDisplay from "./TagDisplay";
 
 interface TagInputProps {
@@ -14,7 +14,7 @@ const TagInput: React.FC<TagInputProps> = ({
   onChange,
   placeholder,
 }) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
   const [inputValue, setInputValue] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -69,12 +69,12 @@ const TagInput: React.FC<TagInputProps> = ({
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
           onBlur={() => inputValue && addTag(inputValue)}
-          placeholder={tags.length === 0 ? (placeholder || t("addTags")) : ""}
-          className="flex-grow outline-none bg-transparent min-w-[120px]"
+          placeholder={tags.length === 0 ? (placeholder || content.addTags.value) : ""}
+          className="flex-grow outline-none bg-white dark:bg-gray-800 dark:text-white text-gray-900 min-w-[120px]"
         />
       </div>
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        {t("pressEnterOrComma")}
+        {content.pressEnterOrComma}
       </p>
     </div>
   );
