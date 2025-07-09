@@ -17,7 +17,7 @@ A modern and user-friendly todo list application built with React, TypeScript, a
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Vite](https://vitejs.dev/) - Build tool and dev server
 - [Tailwind CSS](https://tailwindcss.com/) - Styling library
-- [Intlayer](https://github.com/intlayer/intlayer) - Modern internationalization (multi-language support)
+- [Intlayer](https://github.com/aymericzip/intlayer) - Modern internationalization (multi-language support, [official GitHub repo](https://github.com/aymericzip/intlayer))
 
 ## Installation
 
