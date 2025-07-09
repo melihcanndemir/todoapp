@@ -17,7 +17,7 @@ A modern and user-friendly todo list application built with React, TypeScript, a
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Vite](https://vitejs.dev/) - Build tool and dev server
 - [Tailwind CSS](https://tailwindcss.com/) - Styling library
-- [i18next](https://www.i18next.com/) - Internationalization
+- [Intlayer](https://github.com/intlayer/intlayer) - Modern internationalization (multi-language support)
 
 ## Installation
 
@@ -45,7 +45,7 @@ npm run dev
 - Check the checkbox to mark a task as completed
 - Click "Delete" to remove a task
 - Click 🌙/☀️ in the top right to toggle dark/light theme
-- Click 🇹🇷/🇬🇧 in the top right to change language
+- Use the language dropdown in the top right to change the application language (supports 15+ languages)
 
 ## Project Structure
 
@@ -55,11 +55,8 @@ src/
 │   ├── TodoInput.tsx  # Task input form
 │   ├── TodoItem.tsx   # Individual task component
 │   └── TodoList.tsx   # Task list component
-├── i18n/              # Internationalization
-│   ├── config.ts      # i18n configuration
-│   └── locales/       # Language files
-│       ├── en.json    # English translations
-│       └── tr.json    # Turkish translations
+├── app.content.tsx    # Intlayer dictionary (all translations)
+├── intlayer.config.ts # Intlayer configuration
 ├── App.tsx            # Main application component
 └── main.tsx          # Application entry point
 ```

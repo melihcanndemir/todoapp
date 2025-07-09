@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 
 export interface Subtask {
   id: number;
@@ -20,7 +20,7 @@ const SubtaskItem = ({
   onDelete,
   onEdit,
 }: SubtaskItemProps) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(subtask.text);
 
@@ -44,7 +44,7 @@ const SubtaskItem = ({
           value={editedText}
           onChange={(e) => setEditedText(e.target.value)}
           className="w-full px-2 py-1 mb-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600"
-          placeholder={t("subtaskText")}
+          placeholder={content.subtaskText.value}
           autoFocus
         />
         <div className="flex gap-2 justify-end">
@@ -52,13 +52,13 @@ const SubtaskItem = ({
             onClick={handleCancel}
             className="px-2 py-1 text-xs text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100"
           >
-            {t("cancel")}
+            {content.cancel.value}
           </button>
           <button
             onClick={handleSave}
             className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            {t("save")}
+            {content.save.value}
           </button>
         </div>
       </div>
@@ -84,7 +84,7 @@ const SubtaskItem = ({
         <button
           onClick={() => setIsEditing(true)}
           className="text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
-          title={t("edit")}
+          title={content.edit.value}
         >
           <svg
             className="w-4 h-4"
@@ -103,7 +103,7 @@ const SubtaskItem = ({
         <button
           onClick={() => onDelete(subtask.id)}
           className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
-          title={t("delete")}
+          title={content.delete.value}
         >
           <svg
             className="w-4 h-4"

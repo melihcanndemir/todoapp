@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 import TagDisplay from "./TagDisplay";
 
 interface TagFilterProps {
@@ -13,7 +13,7 @@ const TagFilter: React.FC<TagFilterProps> = ({
   selectedTags,
   onTagSelect,
 }) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
 
   if (availableTags.length === 0) {
     return null;
@@ -22,7 +22,7 @@ const TagFilter: React.FC<TagFilterProps> = ({
   return (
     <div className="mb-4">
       <p className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {t("filterByTag")}:
+        {content.filterByTag}:
       </p>
       <div className="flex flex-wrap gap-2">
         {availableTags.map((tag) => (
@@ -39,7 +39,7 @@ const TagFilter: React.FC<TagFilterProps> = ({
             onClick={() => selectedTags.forEach(tag => onTagSelect(tag))}
             className="text-xs text-blue-600 dark:text-blue-400 hover:underline px-2 py-1"
           >
-            {t("clearFilters")}
+            {content.clearFilters}
           </button>
         )}
       </div>

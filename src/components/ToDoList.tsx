@@ -1,6 +1,6 @@
 import TodoItem from "./ToDoItem";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 import { MdOutlineAssignment } from "react-icons/md";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import TagFilter from "./ui/TagFilter";
@@ -51,7 +51,7 @@ const TodoList = ({
   onDeleteSubtask,
   onEditSubtask,
 }: Props) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // Get all unique tags from todos
@@ -98,7 +98,7 @@ const TodoList = ({
         )}
         <div className="mt-4 p-8 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-lg border dark:border-gray-700">
           <MdOutlineAssignment className="mx-auto mb-4 text-6xl text-gray-400 dark:text-gray-500" />
-          {t("emptyState")}
+          {content.emptyState}
         </div>
       </div>
     );
@@ -143,7 +143,7 @@ const TodoList = ({
           {...provided.droppableProps}
         >
           <div className="text-xs text-gray-400 dark:text-gray-500 mb-2 select-none">
-            {t("dragToReorder")}
+            {content.dragToReorder}
           </div>
           <div className="animate-fade-in">
             {sortedTodos.map((todo, index) => (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 import SubtaskItem from "./SubtaskItem";
 import type { Subtask } from "./SubtaskItem";
 
@@ -20,7 +20,7 @@ const SubtaskList = ({
   onDeleteSubtask,
   onEditSubtask,
 }: SubtaskListProps) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
   const [newSubtaskText, setNewSubtaskText] = useState("");
 
   const handleAddSubtask = () => {
@@ -44,7 +44,7 @@ const SubtaskList = ({
           value={newSubtaskText}
           onChange={(e) => setNewSubtaskText(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={t("addSubtask")}
+          placeholder={content.addSubtask.value}
           className="flex-1 px-3 py-1 text-sm rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600"
         />
         <button
@@ -52,7 +52,7 @@ const SubtaskList = ({
           disabled={!newSubtaskText.trim()}
           className="ml-2 px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {t("add")}
+          {content.add.value}
         </button>
       </div>
       
@@ -70,7 +70,7 @@ const SubtaskList = ({
         </div>
       ) : (
         <div className="text-sm text-gray-500 dark:text-gray-400 italic">
-          {t("noSubtasks")}
+          {content.noSubtasks.value}
         </div>
       )}
     </div>

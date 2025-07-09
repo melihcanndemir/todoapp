@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer } from "react-intlayer";
 import { Badge } from "./ui";
 import SubtaskList from "./SubtaskList";
 import TagDisplay from "./ui/TagDisplay";
@@ -46,7 +46,7 @@ const TodoItem = ({
   onDeleteSubtask,
   onEditSubtask,
 }: Props) => {
-  const { t } = useTranslation();
+  const content = useIntlayer("app");
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(text);
   const [editedDescription, setEditedDescription] = useState(description || "");
@@ -82,14 +82,14 @@ const TodoItem = ({
           value={editedText}
           onChange={(e) => setEditedText(e.target.value)}
           className="w-full px-3 py-2 mb-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600"
-          placeholder={t("todoText")}
+          placeholder={content.todoText.value}
           autoFocus
         />
         <textarea
           value={editedDescription}
           onChange={(e) => setEditedDescription(e.target.value)}
           className="w-full px-3 py-2 mb-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 resize-none"
-          placeholder={t("descriptionOptional")}
+          placeholder={content.descriptionOptional.value}
           rows={2}
         />
         {editedDescription && editedDescription.trim() !== "" && (
@@ -109,13 +109,13 @@ const TodoItem = ({
             onClick={handleCancel}
             className="px-3 py-1 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100"
           >
-            {t("cancel")}
+            {content.cancel.value}
           </button>
           <button
             onClick={handleSave}
             className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            {t("save")}
+            {content.save.value}
           </button>
         </div>
       </div>
@@ -140,9 +140,7 @@ const TodoItem = ({
         </span>
         <div className="flex items-center gap-2">
           <Badge variant={getPriorityVariant(priority)} size="sm">
-            {t(
-              `priority${priority.charAt(0).toUpperCase() + priority.slice(1)}`
-            )}
+            {content[`priority${priority.charAt(0).toUpperCase() + priority.slice(1)}`].value}
           </Badge>
           <Badge
             variant={
@@ -154,7 +152,7 @@ const TodoItem = ({
             }
             size="sm"
           >
-            {t(category)}
+            {content[category].value}
           </Badge>
           <button
             onClick={() => setIsEditing(true)}
@@ -207,7 +205,7 @@ const TodoItem = ({
               />
             </svg>
             <span className={`${done ? 'line-through' : ''} ${new Date(dueDate) < new Date() && !done ? 'text-red-500 dark:text-red-400 font-medium' : ''}`}>
-              {t('dueDate')}: {new Date(dueDate).toLocaleDateString()}
+              {content.dueDate.value}: {new Date(dueDate).toLocaleDateString()}
             </span>
           </div>
         )}
@@ -242,7 +240,7 @@ const TodoItem = ({
                 />
               </svg>
               <span>
-                {showSubtasks ? t('hideSubtasks') : t('showSubtasks')} ({subtasks.length})
+                {showSubtasks ? content.hideSubtasks.value : content.showSubtasks.value} ({subtasks.length})
               </span>
             </button>
           </div>
@@ -281,7 +279,7 @@ const TodoItem = ({
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              {t('addSubtasks')}
+              {content.addSubtasks.value}
             </button>
           </div>
         )}

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useIntlayer, useLocale } from "react-intlayer";
 import { DragDropContext } from "@hello-pangea/dnd";
 import type { DropResult } from "@hello-pangea/dnd";
 import TodoInput from "./components/ToDoInput";
 import TodoList from "./components/ToDoList";
+import { Locales } from "intlayer";
+
 
 interface Todo {
   id: number;
@@ -27,8 +29,27 @@ interface Subtask {
 const STORAGE_KEY = "todos";
 const DARK_MODE_KEY = "darkMode";
 
+const supportedLocales = [
+  { code: "en", label: "English" },
+  { code: "tr", label: "Türkçe" },
+  { code: "de", label: "Deutsch" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
+  { code: "it", label: "Italiano" },
+  { code: "ar", label: "العربية" },
+  { code: "ru", label: "Русский" },
+  { code: "zh", label: "中文" },
+  { code: "ja", label: "日本語" },
+  { code: "pt", label: "Português" },
+  { code: "nl", label: "Nederlands" },
+  { code: "ko", label: "한국어" },
+  { code: "fa", label: "فارسی" },
+  { code: "hi", label: "हिन्दी" }
+];
+
 function App() {
-  const { t, i18n } = useTranslation();
+  const content = useIntlayer("app");
+  const { locale, setLocale } = useLocale();
   const [todos, setTodos] = useState<Todo[]>(() => {
     const savedTodos = localStorage.getItem(STORAGE_KEY);
     return savedTodos ? JSON.parse(savedTodos) : [];
@@ -57,11 +78,6 @@ function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
   }, [todos]);
-
-  const toggleLanguage = () => {
-    const newLang = i18n.language === "tr" ? "en" : "tr";
-    i18n.changeLanguage(newLang);
-  };
 
   const toggleTodo = (id: number) => {
     setTodos(
@@ -210,11 +226,9 @@ function App() {
       return a.done === b.done ? 0 : a.done ? 1 : -1;
     }
     if (sortBy === "dueDate") {
-      // If either todo doesn't have a due date, handle accordingly
       if (!a.dueDate && !b.dueDate) return 0;
-      if (!a.dueDate) return 1; // Items without due dates come last
+      if (!a.dueDate) return 1;
       if (!b.dueDate) return -1;
-      // Otherwise, sort by the actual dates
       return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
     }
     return 0;
@@ -227,20 +241,27 @@ function App() {
           <div className="flex items-center gap-3">
             <img src="/checklist.png" alt="Todo App" className="w-8 h-8" />
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-              {t("title")}
+              {content.title.value}
             </h1>
           </div>
           <div className="flex gap-2">
-            <button
-              onClick={toggleLanguage}
+            <select
+              value={locale}
+              onChange={(e) => {
+                const value = e.target.value as Locales;
+                setLocale(value);
+              }}
               className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
+              title="Dil Seç"
             >
-              {i18n.language === "tr" ? "🇬🇧" : "🇹🇷"}
-            </button>
+              {supportedLocales.map(l => (
+                <option key={l.code} value={l.code}>{l.label}</option>
+              ))}
+            </select>
             <button
               onClick={() => setDarkMode(!darkMode)}
               className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
-              title={darkMode ? t("lightMode") : t("darkMode")}
+              title={darkMode ? content.lightMode.value : content.darkMode.value}
             >
               {darkMode ? "☀️" : "🌙"}
             </button>
@@ -248,7 +269,7 @@ function App() {
         </div>
         <input
           type="text"
-          placeholder={t("searchPlaceholder")}
+          placeholder={content.searchPlaceholder.value}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full px-4 py-2 mb-4 rounded bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700"
@@ -262,7 +283,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("all")}
+            {content.all.value}
           </button>
           <button
             onClick={() => setFilter("work")}
@@ -272,7 +293,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("work")}
+            {content.work.value}
           </button>
           <button
             onClick={() => setFilter("school")}
@@ -282,7 +303,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("school")}
+            {content.school.value}
           </button>
           <button
             onClick={() => setFilter("personal")}
@@ -292,7 +313,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("personal")}
+            {content.personal.value}
           </button>
         </div>
         <div className="flex flex-wrap gap-2 mb-4 bg-gray-100/50 dark:bg-gray-800/50 p-1.5 rounded-lg backdrop-blur-sm">
@@ -304,7 +325,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("noSort")}
+            {content.noSort.value}
           </button>
           <button
             onClick={() => setSortBy("text")}
@@ -314,7 +335,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("sortByName")}
+            {content.sortByName.value}
           </button>
           <button
             onClick={() => setSortBy("category")}
@@ -324,7 +345,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("sortByCategory")}
+            {content.sortByCategory.value}
           </button>
           <button
             onClick={() => setSortBy("completion")}
@@ -334,7 +355,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("sortByCompletion")}
+            {content.sortByCompletion.value}
           </button>
           <button
             onClick={() => setSortBy("dueDate")}
@@ -344,7 +365,7 @@ function App() {
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/70 dark:hover:bg-gray-700/70"
             }`}
           >
-            {t("sortByDueDate")}
+            {content.sortByDueDate.value}
           </button>
         </div>
         <TodoInput onAdd={addTodo} />
